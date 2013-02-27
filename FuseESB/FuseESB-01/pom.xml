@@ -7,7 +7,7 @@
 	<artifactId>FuseESB-01</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
-	<name>Teste de integração com o Fusion</name>
+	<name>Teste de integração com o Fuse</name>
 
 	<dependencies>
 
@@ -40,6 +40,76 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>3.2.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>3.2.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>3.2.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.2.1.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>
+				org.apache.servicemix.bundles.commons-dbcp
+			</artifactId>
+			<version>1.4_3</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-core</artifactId>
+			<version>2.7.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
+			<version>3.6.0.v20100517</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
+			<version>1.4_3</version>
+			<type>bundle</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.commons-pool</artifactId>
+			<version>1.5.4_4</version>
+			<type>bundle</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+			<version>2.2-promoted-b65</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
+			<version>2.2.1.1_1</version>
+			<type>bundle</type>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -52,6 +122,80 @@
 					<includePluginDependencies>false</includePluginDependencies>
 				</configuration>
 			</plugin>
+
+			<!-- Plugin for bundle -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.4</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>package</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Export-Package>
+							com.fuseesb*
+						</Export-Package>
+						<Import-Package>
+							META-INF.cxf,
+							org.apache.cxf.bus,
+							org.apache.cxf.bus.spring,
+							org.apache.cxf.bus.resource,
+							org.apache.cxf.configuration.spring,
+							org.apache.cxf.resource,
+							org.apache.servicemix.cxfse,
+							org.springframework.beans.factory.config,
+							org.apache.servicemix.common.osgi,
+							org.apache.commons.dbcp,
+							*
+						</Import-Package>
+						<!-- Include-Resource>src/main/resources</Include-Resource -->
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<extensions>false</extensions>
+				<inherited>false</inherited>
+				<configuration>
+					<source>1.7</source>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>fusesource</id>
+			<url>http://repo.fusesource.com/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>esb-local</id>
+			<url>http://arch.oit.umn.edu/maven2/esb-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+
+	</repositories>
 </project>
